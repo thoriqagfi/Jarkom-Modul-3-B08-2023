@@ -489,7 +489,8 @@ Kita lakukan pada load balancer karena semua client akan mengarah ke 192.182.1.2
 
 Selanjutnya, kita lakukan testing pada Client Sein. Hasilnya :
 
-[Image]
+![WhatsApp Image 2023-11-19 at 15 27 55_f4b67d3c](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/92865110/3c80cb0b-59d3-4274-85d2-c906d99d87a0)
+
 
 ## Soal 12
 #### Selanjutnya LB ini hanya boleh diakses oleh client dengan IP [Prefix IP].3.69, [Prefix IP].3.70, [Prefix IP].4.167, dan [Prefix IP].4.168. (12) hint: (fixed in dulu clinetnya)
@@ -658,12 +659,18 @@ bash /root/nginx.sh
 
 Ketika kita lakukan lynx ke localhost masing-masing worker :
 
+![WhatsApp Image 2023-11-19 at 15 27 55_669cae59](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/92865110/7e7e69d6-8e6a-4a8e-9672-8b61736e3465)
+
 
 ## Soal 15 - 17
 #### Riegel Channel memiliki beberapa endpoint yang harus ditesting sebanyak 100 request dengan 10 request/second. Tambahkan response dan hasil testing pada grimoire.
 #### a. POST /auth/register (15)
 #### b. POST /auth/login (16)
 #### c. GET /me (17)
+
+Sebelum melakukan testing pada client, kita coba testing di localhost terlebih dahulu :
+
+![WhatsApp Image 2023-11-19 at 15 55 37_c879910a](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/92865110/e106be51-d60e-460c-a860-f35978281651)
 
 Untuk melakukan testing api, kita melakukan testing api menggunakan curl
 
@@ -676,6 +683,10 @@ curl -XPOST -H "Content-type: application/json" -d '{
 
 }' 'riegel.canyon.B08.com/api/auth/register'
 ```
+Hasil :
+
+![WhatsApp Image 2023-11-19 at 16 13 27_e0f6d906](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/92865110/7e73e3f0-59c8-4a4a-b266-66590cb51316)
+
 
 - `/api/auth/login`
 ```bash
@@ -687,6 +698,11 @@ curl -XPOST -H "Content-type: application/json" -d '{
 }' 'riegel.canyon.B08.com/api/auth/login'
 ```
 
+Hasil :
+
+![WhatsApp Image 2023-11-19 at 16 13 28_ba34cea2](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/92865110/56d056a7-3be5-405f-8389-0fcc0e18a095)
+
+
 - `/api/me`
 ```bash
 curl -XGET -H "Content-type: application/json" -d '{
@@ -695,6 +711,17 @@ curl -XGET -H "Content-type: application/json" -d '{
 
 }' 'riegel.canyon.B08.com/api/me'
 ```
+
+Hasil :
+
+![WhatsApp Image 2023-11-19 at 16 17 53_792442bf](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/92865110/14585ce5-811f-4878-b825-4507b13c78da)
+
+
+Untuk mengecek apakah sudah masuk ke database atau belum, kita cek di database :
+
+![WhatsApp Image 2023-11-19 at 16 13 35_d2bee916](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/92865110/50f16b0e-5775-44c1-b2a4-db454ca97468)
+
+
 
 ## Soal 18
 
