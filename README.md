@@ -768,3 +768,52 @@ server {
 ## Soal 19
 
 ## Soal 20
+#### Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Eisen. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second. (20)
+
+Untuk mengimplementasikan `least conn`, kita hanya perlu menambahkan `least_conn;` pada load balancer laravel :
+
+```conf
+upstream laravel {
+
+        least_conn;
+        server 192.182.4.1; # IP Frieren
+        server 192.182.4.2; # IP Flamme
+        server 192.182.4.3; # IP Fern
+}
+
+
+server {
+        listen 80;
+        server_name riegel.canyon.B08.com;
+
+        location ^~ /its {
+                proxy_pass https://www.its.ac.id;
+        }
+
+        location /api/auth/register {
+                proxy_bind 192.182.4.1;
+                proxy_pass http://riegel.canyon.B08.com/api/auth/register;
+        }
+
+        location /api/auth/login {
+                proxy_bind 192.182.4.2;
+                proxy_pass http://riegel.canyon.B08.com/api/auth/login;
+        }
+
+        location /api/me {
+                proxy_bind 192.182.4.3;
+                proxy_pass http://riegel.canyon.B08.com/api/me;
+        }
+
+        location / {
+                proxy_pass http://laravel;
+        }
+
+}
+```
+
+
+
+
+## Tools
+Test API : [Online Curl](https://tools.w3cub.com/curl-builder)
