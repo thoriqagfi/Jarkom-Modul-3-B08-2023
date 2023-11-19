@@ -665,8 +665,17 @@ Ketika kita lakukan lynx ke localhost masing-masing worker :
 ## Soal 15 - 17
 #### Riegel Channel memiliki beberapa endpoint yang harus ditesting sebanyak 100 request dengan 10 request/second. Tambahkan response dan hasil testing pada grimoire.
 #### a. POST /auth/register (15)
+
+![image](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/86884506/201cd7e6-f416-43bc-b19c-7cd885737356)
+
 #### b. POST /auth/login (16)
+
+![image](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/86884506/7b9bc4c5-642c-4b71-90d9-81dd99533edb)
+
 #### c. GET /me (17)
+
+![image](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/86884506/412a8b74-bec5-4d7c-881c-9c0f78db102a)
+
 
 Sebelum melakukan testing pada client, kita coba testing di localhost terlebih dahulu :
 
@@ -811,8 +820,21 @@ server {
 
 }
 ```
+### /root
 
+![image](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/86884506/3aca1b45-d1a4-4be7-b29c-4240fdf7102d)
 
+### /register
+
+![image](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/86884506/a2c6a316-3329-44d9-a10f-2a448ae44d94)
+
+### /login
+
+![image](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/86884506/7a673844-933c-4e73-b6d3-02ece1ebfefd)
+
+### /me
+
+![image](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/86884506/9b67f079-e7d3-47db-8f09-a882d4c8329e)
 
 
 ## Tools
