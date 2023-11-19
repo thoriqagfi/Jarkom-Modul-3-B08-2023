@@ -249,7 +249,7 @@ FLUSH PRIVILEGES;
 
 
 ## Soal 6
-#### Pada masing-masing worker PHP, lakukan konfigurasi virtual host untuk website berikut dengan menggunakan php 7.3. 
+#### Pada masing-masing worker PHP, lakukan konfigurasi virtual host untuk website berikut dengan menggunakan php 7.3.
 
 
 Download terlebih dahulu modules yang diperlukan, lalu kita download file modul-3 yang tertera di soal
@@ -261,7 +261,7 @@ apt-get install php php-fpm -y
 
 apt-get install wget -y
 apt-get install unzip -y
-wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1ViSkRq7SmwZgdK64eRbr5Fm1EGCTPrU1' -O modul-3.zip 
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1ViSkRq7SmwZgdK64eRbr5Fm1EGCTPrU1' -O modul-3.zip
 unzip modul-3.zip -d .
 
 service php7.3-fpm start
@@ -271,24 +271,24 @@ cp -r /root/nginx /etc
 
 ln -s /etc/nginx/sites-available /etc/sites-enabled
 
-service nginx restart	
+service nginx restart
 ```
 
-lalu dilakukan konfigurasi nginx 
-dimana diganti rootnya menjadi 
+lalu dilakukan konfigurasi nginx
+dimana diganti rootnya menjadi
 
 ```
 root /var/www/modul-3
 ```
-dan jangan lupa menambahkan index.php pada list nya 
+dan jangan lupa menambahkan index.php pada list nya
 ![image](https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/86884506/66852636-077e-47aa-a248-15ad2bd6a4dc)
 
 dilakukan pada ketiga worker PHP yaitu Lawine, Linie, Lugner
 
 ## Soal 7
-#### aturlah agar Eisen dapat bekerja dengan maksimal, lalu lakukan testing dengan 1000 request dan 100 request/second. 
+#### aturlah agar Eisen dapat bekerja dengan maksimal, lalu lakukan testing dengan 1000 request dan 100 request/second.
 
-pertama install modules yang diperlukan 
+pertama install modules yang diperlukan
 
 ```bash
 
@@ -301,7 +301,7 @@ apt-get install nginx -y
 
 lalu untuk konfigurasi lb granz_channel (default : round robin)
 
-```bash
+```conf
 upstream myweb {
         hash $request_uri consistent;
         server 192.182.3.1; # IP lawine
@@ -324,7 +324,7 @@ server {
 
 konfigurasi riegel_canyon (default round-robin)
 
-```bash
+```conf
 upstream laravel {
         server 192.182.4.1; # IP Frieren
         server 192.182.4.2; # IP Flamme
@@ -344,7 +344,7 @@ server {
 
 ```
 
-jangan lupa melakukan 
+jangan lupa melakukan
 ``` service nginx restart```
 setiap melakukan perubahan pada konfigurasi nginx
 
@@ -357,9 +357,9 @@ ab -n 1000 -c 100 granz.channel.B08.com/myweb
 
 
 ## Soal 8
-#### melakukan testing dengan load 200 request dan 10 request per second menggunakan tiap algoritma, maka kita perlu mengganti konfigurasi nginx nya tiap melakukan testing. pada defaultnya load balancer akan menggunakan algoritma round robin. untuk menggantinya kita harus menambahkan 1 line pada load balancenrnya yaitu 
+#### melakukan testing dengan load 200 request dan 10 request per second menggunakan tiap algoritma, maka kita perlu mengganti konfigurasi nginx nya tiap melakukan testing. pada defaultnya load balancer akan menggunakan algoritma round robin. untuk menggantinya kita harus menambahkan 1 line pada load balancenrnya yaitu
 
-```bash
+```conf
 upstream myweb {
 
         #tambahkan ini
@@ -383,7 +383,7 @@ server {
 }
 ```
 
-lalu dapat dilakukan testing kembali, dan dimasukkan pada grimoire, berikut hasil tabel yang telah kami masukkan kedalam Grimoire 
+lalu dapat dilakukan testing kembali, dan dimasukkan pada grimoire, berikut hasil tabel yang telah kami masukkan kedalam Grimoire
 
 <img width="685" alt="Screenshot 2023-11-18 at 16 20 55" src="https://github.com/thoriqagfi/Jarkom-Modul-3-B08-2023/assets/86884506/82a2099a-4f48-4663-863a-b76f80c477e0">
 
@@ -392,7 +392,7 @@ lalu dapat dilakukan testing kembali, dan dimasukkan pada grimoire, berikut hasi
 
 untuk ini, kita tinggal mengurangi jumlah workernya dengan meng-comment IP Worker masing masing
 
-```bash
+```conf
 upstream myweb {
 
         #Comment yang tidak diperlukan
@@ -414,8 +414,8 @@ server {
 }
 ```
 
-lalu hasil nya adalah : 
-```bash
+lalu hasil nya adalah :
+```conf
 upstream myweb {
 
         #tambahkan ini
@@ -443,9 +443,15 @@ server {
 ## Soal 10
 #### Selanjutnya coba tambahkan konfigurasi autentikasi di LB dengan dengan kombinasi username: “netics” dan password: “ajkyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/rahasisakita/
 
-kita perlu menambahkan beberapa line pada konfigurasi nginx dari granz_channel 
+Sebelum melakukan konfiguras autentikasi dari nginx, kita akan membuat username dan password dengan
 
 ```bash
+htpasswd -b -c /etc/nginx/rahasiakita/htpasswd netics ajkB08
+```
+
+kita perlu menambahkan beberapa line pada konfigurasi nginx dari granz_channel
+
+```conf
 upstream myweb {
         server 192.182.3.1; # IP lawine
         server 192.182.3.2; # IP linie
@@ -469,22 +475,268 @@ server {
 
 
 ## Soal 11
+#### Lalu buat untuk setiap request yang mengandung /its akan di proxy passing menuju halaman https://www.its.ac.id. (11) hint: (proxy_pass)
 
-## Soal 11
+Untuk melakukan proxy pass ke its.ac.id melalui granz.channel.B08.com/its, kita perlu menambahkan konfigurasi pada load balancer granz.channel.B08.com
+
+```conf
+location ^~ /its {
+        proxy_pass https://www.its.ac.id;
+}
+```
+
+Kita lakukan pada load balancer karena semua client akan mengarah ke 192.182.1.2 (IP Web Server) yang akan di redirect ke 192.182.2.2 (IP Load Balancer). Artinya, semua akses dari Client akan diproses melalui Web Server dan Load Balancer terlebih dahulu.
+
+Selanjutnya, kita lakukan testing pada Client Sein. Hasilnya :
+
+[Image]
 
 ## Soal 12
+#### Selanjutnya LB ini hanya boleh diakses oleh client dengan IP [Prefix IP].3.69, [Prefix IP].3.70, [Prefix IP].4.167, dan [Prefix IP].4.168. (12) hint: (fixed in dulu clinetnya)
+
+Untuk membatasi akses hanya oleh IP tertentu, kita menambahkan konfigurasi pada load balancer.
+
+```conf
+        allow 192.182.3.69;
+        allow 192.182.3.70;
+        allow 192.182.4.167;
+        allow 192.182.4.168;
+        deny all;
+```
+
 
 ## Soal 13
+#### Semua data yang diperlukan, diatur pada Denken dan harus dapat diakses oleh Frieren, Flamme, dan Fern. (13)
+
+Agar data hanya dapat diakses oleh Frieren, Flamme dan Fern, kita melakukan konfigurasi :
+
+```bash
+mysql << EOF
+
+CREATE USER 'kelompokB08'@'192.182.4.%' IDENTIFIED BY 'passwordB08';
+CREATE USER 'kelompokB08'@'localhost' IDENTIFIED BY 'passwordB08';
+CREATE DATABASE dbkelompokB08;
+GRANT ALL PRIVILEGES ON *.* TO 'kelompokB08'@'192.182.4.%';
+GRANT ALL PRIVILEGES ON *.* TO 'kelompokB08'@'localhost';
+FLUSH PRIVILEGES;
+
+EOF
+
+cp -r /root/mysql /etc
+
+service mysql restart
+```
+
+Selanjutnya, kita lakukan konfigurasi untuk mengizinkan mysql agar dapat diakses oleh luar IP Database (Denken) dengan menambahkan pada `mariadb.conf.d/50-server.cnf` :
+
+```conf
+bind-address            = 0.0.0.0
+```
+
 
 ## Soal 14
+#### Frieren, Flamme, dan Fern memiliki Riegel Channel sesuai dengan quest guide berikut. Jangan lupa melakukan instalasi PHP8.0 dan Composer (14)
 
-## Soal 15
+Kita melakukan setup untuk setiap worker laravel.
 
-## Soal 16
+Pertama, kita lakukan instalasi semua dependency yang diperlukan
+`nginx.sh`:
+```bash
+apt-get update
 
-## Soal 17
+wait
+apt-get install mariadb-client -y
+apt-get install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2
+
+curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
+
+sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/so$
+
+apt-get update
+
+apt-get install php8.0-mbstring php8.0-xml php8.0-cli php8.0-common php8.0-intl php8.0-opcache php8.0-readline php8.0-mysql php8.0-fpm php8$
+apt-get install nginx -y
+apt-get install apache2-utils -y
+
+wget https://getcomposer.org/download/2.0.13/composer.phar
+chmod +x composer.phar
+mv composer.phar /usr/bin/composer
+
+apt-get install git -y
+```
+
+Kemudian, kita clone repository dan setup laravel
+
+`laravel.sh`:
+```bash
+git clone https://github.com/martuafernando/laravel-praktikum-jarkom.git
+
+wait
+
+cp -r laravel-praktikum-jarkom /var/www
+cd /var/www/laravel-praktikum-jarkom
+
+composer install
+cp .env.example .env
+
+composer update
+
+php artisan migrate:fresh
+php artisan db:seed --class=AiringsTableSeeder
+php artisan key:generate
+php artisan jwt:secret
+```
+
+Tak lupa, kita sesuaikan .env database pada laravel worker
+```conf
+DB_CONNECTION=mysql
+DB_HOST=192.182.2.1
+DB_PORT=3306
+DB_DATABASE=dbkelompokB08
+DB_USERNAME=kelompokB08
+DB_PASSWORD=passwordB08
+```
+
+Setelah semua setup laravel berhasil, kita konfigurasi nginx
+
+`/sites-enabled/default` :
+```conf
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        root /var/www/laravel-praktikum-jarkom/public;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html index.php;
+
+        server_name riegel.canyon.B08.com;
+
+        location / {
+                try_files $uri $uri/ /index.php$query_string;
+        }
+
+        # pass PHP scripts to FastCGI server
+        #
+        location ~ \.php$ {
+                include snippets/fastcgi-php.conf;
+        #
+        #       # With php-fpm (or other unix sockets):
+                fastcgi_pass unix:/run/php/php8.0-fpm.sock;
+        #       # With php-cgi (or other tcp sockets):
+        #       fastcgi_pass 127.0.0.1:9000;
+        }
+
+        location ~ /\.ht {
+                deny all;
+        }
+}
+```
+
+`nginx.sh` :
+```bash
+service php8.0-fpm start
+
+cp default /etc/nginx/sites-available/
+
+chown -R www-data.www-data /var/www/laravel-praktikum-jarkom/storage
+
+service nginx restart
+```
+
+```bash
+bash /root/script.sh
+
+wait
+
+bash /root/laravel.sh
+
+wait
+
+bash /root/nginx.sh
+```
+
+Ketika kita lakukan lynx ke localhost masing-masing worker :
+
+
+## Soal 15 - 17
+#### Riegel Channel memiliki beberapa endpoint yang harus ditesting sebanyak 100 request dengan 10 request/second. Tambahkan response dan hasil testing pada grimoire.
+#### a. POST /auth/register (15)
+#### b. POST /auth/login (16)
+#### c. GET /me (17)
+
+Untuk melakukan testing api, kita melakukan testing api menggunakan curl
+
+- `/api/auth/register`
+```bash
+curl -XPOST -H "Content-type: application/json" -d '{
+
+"username":"thoriq",
+"password":"123456789"
+
+}' 'riegel.canyon.B08.com/api/auth/register'
+```
+
+- `/api/auth/login`
+```bash
+curl -XPOST -H "Content-type: application/json" -d '{
+
+"username":"thoriq",
+"password":"123456789"
+
+}' 'riegel.canyon.B08.com/api/auth/login'
+```
+
+- `/api/me`
+```bash
+curl -XGET -H "Content-type: application/json" -d '{
+
+"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbC9hcGkvYXV0aC9sb2dpbiIsImlhdCI6MTcwMDM4NTI5OSwiZXhwIjoxNzAwMzg4ODk5LCJuYmYiOjE3MDAzODUyOTksImp0aSI6Ik9XalBZUmYzNHFmSERySVQiLCJzdWIiOiIzIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.yZx6nxXWfhji4L-jPvbPy9Jt-OeuOqULIfzeYdtzK0w"
+
+}' 'riegel.canyon.B08.com/api/me'
+```
 
 ## Soal 18
+
+```conf
+upstream laravel {
+
+#       least_conn;
+        server 192.182.4.1; # IP Frieren
+        server 192.182.4.2; # IP Flamme
+        server 192.182.4.3; # IP Fern
+}
+
+
+server {
+        listen 80;
+        server_name riegel.canyon.B08.com;
+
+        location ^~ /its {
+                proxy_pass https://www.its.ac.id;
+        }
+
+        location /api/auth/register {
+                proxy_bind 192.182.4.1;
+                proxy_pass http://riegel.canyon.B08.com/api/auth/register;
+        }
+
+        location /api/auth/login {
+                proxy_bind 192.182.4.2;
+                proxy_pass http://riegel.canyon.B08.com/api/auth/login;
+        }
+
+        location /api/me {
+                proxy_bind 192.182.4.3;
+                proxy_pass http://riegel.canyon.B08.com/api/me;
+        }
+
+        location / {
+                proxy_pass http://laravel;
+        }
+
+}
+```
 
 ## Soal 19
 
